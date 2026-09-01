@@ -7,6 +7,7 @@ const { getFileContent } = require("../services/contentService");
 const { analyzeDependencies } = require("../analyzers/dependencyAnalyzer");
 const { analyzePractices } = require("../analyzers/practiceAnalyzer");
 const { analyzeSecurity } = require("../analyzers/securityAnalyzer");
+const {analyzeRecommendations,}= require("../analyzers/recommendationAnalyzer");
 
 const analyzeRepository = async (req, res) => {
   const { repoUrl } = req.body;
@@ -31,6 +32,7 @@ const analyzeRepository = async (req, res) => {
     const projectType = detectProjectType(repository, structure);
     const practices = analyzePractices(tree);
     const security = analyzeSecurity(tree);
+   
 
     let dependencies = null;
 
@@ -44,6 +46,13 @@ if (structure.hasPackageJson) {
 
   dependencies = analyzeDependencies(packageJsonContent, structure);
 }
+const recommendations = analyzeRecommendations({
+  structure,
+  dependencies,
+  practices,
+  security,
+
+});
 
     res.json({
       message: "Repository analyzed successfully",
@@ -66,6 +75,7 @@ if (structure.hasPackageJson) {
       dependencies,
       practices,
       security,
+      recommendations,
     });
   } catch (error) {
     res.status(400).json({
