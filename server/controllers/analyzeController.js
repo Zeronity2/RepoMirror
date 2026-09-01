@@ -5,6 +5,8 @@ const { calculateHealth } = require("../analyzers/healthAnalyzer");
 const { detectProjectType } = require("../analyzers/projectAnalyzer");
 const { getFileContent } = require("../services/contentService");
 const { analyzeDependencies } = require("../analyzers/dependencyAnalyzer");
+const { analyzePractices } = require("../analyzers/practiceAnalyzer");
+const { analyzeSecurity } = require("../analyzers/securityAnalyzer");
 
 const analyzeRepository = async (req, res) => {
   const { repoUrl } = req.body;
@@ -27,6 +29,8 @@ const analyzeRepository = async (req, res) => {
     const structure = analyzeStructure(tree);
     const health = calculateHealth(structure);
     const projectType = detectProjectType(repository, structure);
+    const practices = analyzePractices(tree);
+    const security = analyzeSecurity(tree);
 
     let dependencies = null;
 
@@ -60,6 +64,8 @@ if (structure.hasPackageJson) {
       health,
       projectType,
       dependencies,
+      practices,
+      security,
     });
   } catch (error) {
     res.status(400).json({
