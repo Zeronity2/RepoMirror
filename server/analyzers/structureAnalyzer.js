@@ -15,22 +15,45 @@ const analyzeStructure = (tree) => {
     }
   });
 
+  // README detection
   const hasReadme = files.some((file) =>
     path.basename(file.path).toLowerCase().startsWith("readme")
   );
 
+  // JavaScript / Node.js configuration
   const hasPackageJson = files.some(
-    (file) => path.basename(file.path).toLowerCase() === "package.json"
+    (file) =>
+      path.basename(file.path).toLowerCase() === "package.json"
   );
 
+  // General project configuration
+  // Supports JavaScript, Python, and other common project types
+  const hasConfiguration = files.some((file) => {
+    const fileName = path.basename(file.path).toLowerCase();
+
+    return (
+      fileName === "package.json" ||
+      fileName === "requirements.txt" ||
+      fileName === "pyproject.toml" ||
+      fileName === "pipfile" ||
+      fileName === "setup.py"
+    );
+  });
+
+  // Test detection
   const hasTests = files.some((file) => {
     const fileName = path.basename(file.path).toLowerCase();
+    const filePath = file.path.toLowerCase();
 
     return (
       fileName.includes(".test.") ||
       fileName.includes(".spec.") ||
-      file.path.toLowerCase().includes("/test/") ||
-      file.path.toLowerCase().includes("/tests/")
+      filePath.startsWith("test/") ||
+      filePath.startsWith("tests/") ||
+      filePath.includes("/test/") ||
+      filePath.includes("/tests/") ||
+      filePath.includes("/__tests__/") ||
+      filePath.startsWith("__tests__/")
     );
   });
 
@@ -40,6 +63,7 @@ const analyzeStructure = (tree) => {
     extensionCounts,
     hasReadme,
     hasPackageJson,
+    hasConfiguration,
     hasTests,
   };
 };

@@ -11,19 +11,18 @@ const detectProjectType = (repository, structure) => {
     extensions[".tsx"];
 
   const hasPython = extensions[".py"];
-
   const hasJava = extensions[".java"];
-
   const hasRust = extensions[".rs"];
 
   const description = (repository.description || "").toLowerCase();
+  const repoName = (repository.name || "").toLowerCase();
 
+  // React / Frontend detection
   if (
-    (hasJavaScript || hasTypeScript) &&
-    repository.name &&
-    (description.includes("react") ||
-      description.includes("frontend") ||
-      description.includes("web"))
+    description.includes("react") ||
+    repoName.includes("react") ||
+    extensions[".jsx"] ||
+    extensions[".tsx"]
   ) {
     return {
       type: "Frontend",
@@ -31,6 +30,24 @@ const detectProjectType = (repository, structure) => {
     };
   }
 
+  // Backend / Node.js detection
+  if (
+    (hasJavaScript || hasTypeScript) &&
+    (
+      description.includes("server") ||
+      description.includes("backend") ||
+      description.includes("api") ||
+      description.includes("node") ||
+      repoName.includes("express")
+    )
+  ) {
+    return {
+      type: "Backend",
+      confidence: "High",
+    };
+  }
+
+  // Python
   if (hasPython) {
     return {
       type: "Python",
@@ -38,6 +55,7 @@ const detectProjectType = (repository, structure) => {
     };
   }
 
+  // Java
   if (hasJava) {
     return {
       type: "Java",
@@ -45,6 +63,7 @@ const detectProjectType = (repository, structure) => {
     };
   }
 
+  // Rust
   if (hasRust) {
     return {
       type: "Rust",
@@ -52,6 +71,7 @@ const detectProjectType = (repository, structure) => {
     };
   }
 
+  // Generic JavaScript / TypeScript
   if (hasJavaScript || hasTypeScript) {
     return {
       type: "JavaScript / TypeScript",

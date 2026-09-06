@@ -9,6 +9,7 @@ function AnalysisDashboard({ analysis }) {
     <section className="px-6 pb-20">
       <div className="mx-auto max-w-6xl">
 
+        {/* Header */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-white">
             Analysis Dashboard
@@ -19,8 +20,10 @@ function AnalysisDashboard({ analysis }) {
           </p>
         </div>
 
+        {/* Repository + Health */}
         <div className="grid gap-6 md:grid-cols-2">
 
+          {/* Repository */}
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <p className="text-sm text-gray-500">
               Repository
@@ -41,32 +44,259 @@ function AnalysisDashboard({ analysis }) {
             </div>
           </div>
 
+          {/* Health */}
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <p className="text-sm text-gray-500">
               Overall Health
             </p>
 
-            <div className="mt-4 flex items-end gap-3">
-              <span className="text-6xl font-bold text-white">
-                {health.score}
-              </span>
+            <div className="mt-6 flex items-center gap-6">
 
-              <span className="mb-2 text-gray-400">
-                / 100
-              </span>
+              <div className="relative flex h-32 w-32 items-center justify-center rounded-full border-8 border-purple-500/20">
+                <div className="text-center">
+                  <p className="text-4xl font-bold text-white">
+                    {health.score}
+                  </p>
+
+                  <p className="text-xs text-gray-500">
+                    / 100
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-2xl font-semibold text-purple-400">
+                  {health.grade}
+                </p>
+
+                <p className="mt-2 max-w-xs text-sm leading-6 text-gray-400">
+                  Overall repository health based on documentation,
+                  testing, structure, configuration, and codebase signals.
+                </p>
+              </div>
+
             </div>
-
-            <p className="mt-3 text-lg text-purple-400">
-              {health.grade}
-            </p>
           </div>
 
         </div>
 
-         <div className="mt-6 grid gap-6 md:grid-cols-2">
+        {/* Health Breakdown */}
+        <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+          <h3 className="text-xl font-semibold text-white">
+            Health Breakdown
+          </h3>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+
+            {Object.entries(health.breakdown).map(
+              ([category, score]) => (
+                <div
+                  key={category}
+                  className="rounded-xl border border-white/10 bg-white/[0.02] p-4"
+                >
+                  <p className="text-sm capitalize text-gray-400">
+                    {category}
+                  </p>
+
+                  <p className="mt-2 text-2xl font-bold text-white">
+                    {score}/20
+                  </p>
+
+                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+                    <div
+                      className="h-full rounded-full bg-purple-500"
+                      style={{
+                        width: `${(score / 20) * 100}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              )
+            )}
+
+          </div>
+        </div>
+
+        {/* Project Type + Dependencies */}
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+
+          {/* Project Type */}
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-sm text-gray-500">
+              Project Type
+            </p>
+
+            <h3 className="mt-2 text-2xl font-semibold text-white">
+              {analysis.projectType.type}
+            </h3>
+
+            <p className="mt-2 text-gray-400">
+              Confidence: {analysis.projectType.confidence}
+            </p>
+          </div>
+
+          {/* Dependencies */}
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-sm text-gray-500">
+              Dependencies
+            </p>
+
+            <h3 className="mt-2 text-2xl font-semibold text-white">
+              {analysis.dependencies?.totalCount ?? 0}
+            </h3>
+
+            <p className="mt-2 text-gray-400">
+              Total dependencies detected
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-4 text-sm text-gray-400">
+              <span>
+                Production:{" "}
+                {analysis.dependencies?.productionCount ?? 0}
+              </span>
+
+              <span>
+                Development:{" "}
+                {analysis.dependencies?.developmentCount ?? 0}
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Security + Engineering Practices */}
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+
+          {/* Security */}
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-sm text-gray-500">
+              Security
+            </p>
+
+            <h3
+              className={`mt-2 text-2xl font-semibold ${
+                analysis.security.riskLevel === "High"
+                  ? "text-red-400"
+                  : analysis.security.riskLevel === "Medium"
+                  ? "text-yellow-400"
+                  : "text-green-400"
+              }`}
+            >
+              {analysis.security.riskLevel} Risk
+            </h3>
+
+            <p className="mt-3 text-gray-400">
+              {analysis.security.sensitiveFiles.count} sensitive
+              file(s) detected.
+            </p>
+
+            {analysis.security.sensitiveFiles.count > 0 && (
+              <div className="mt-4 rounded-lg border border-red-400/10 bg-red-400/5 p-3">
+                <p className="text-sm text-red-300">
+                  Review sensitive files and rotate any exposed secrets.
+                </p>
+              </div>
+            )}
+
+            <p className="mt-4 text-sm text-gray-500">
+              .gitignore:{" "}
+              {analysis.security.gitignore.present
+                ? "Present"
+                : "Missing"}
+            </p>
+          </div>
+
+          {/* Engineering Practices */}
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-sm text-gray-500">
+              Engineering Practices
+            </p>
+
+            <div className="mt-4 space-y-3">
+
+              <div className="flex items-center justify-between">
+                <span className="text-gray-300">
+                  README
+                </span>
+
+                <span>
+                  {analysis.practices.documentation.readme
+                    ? "✅"
+                    : "❌"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-gray-300">
+                  Tests
+                </span>
+
+                <span>
+                  {analysis.practices.testing.hasTests
+                    ? "✅"
+                    : "❌"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-gray-300">
+                  GitHub Actions
+                </span>
+
+                <span>
+                  {analysis.practices.ciCd.githubActions
+                    ? "✅"
+                    : "❌"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-gray-300">
+                  ESLint
+                </span>
+
+                <span>
+                  {analysis.practices.codeQuality.eslint
+                    ? "✅"
+                    : "❌"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-gray-300">
+                  Prettier
+                </span>
+
+                <span>
+                  {analysis.practices.codeQuality.prettier
+                    ? "✅"
+                    : "❌"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-gray-300">
+                  License
+                </span>
+
+                <span>
+                  {analysis.practices.documentation.license
+                    ? "✅"
+                    : "❌"}
+                </span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        {/* Recommendations + Strengths */}
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
 
           {/* Recommendations */}
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-semibold text-white">
                 Recommendations
@@ -78,6 +308,7 @@ function AnalysisDashboard({ analysis }) {
             </div>
 
             <div className="mt-5 space-y-4">
+
               {analysis.recommendations.recommendations.map(
                 (recommendation, index) => (
                   <div
@@ -85,6 +316,7 @@ function AnalysisDashboard({ analysis }) {
                     className="rounded-xl border border-white/10 bg-white/[0.02] p-4"
                   >
                     <div className="flex items-center gap-3">
+
                       <span
                         className={`text-xs font-semibold uppercase ${
                           recommendation.severity === "High"
@@ -100,6 +332,7 @@ function AnalysisDashboard({ analysis }) {
                       <span className="text-sm text-gray-500">
                         {recommendation.category}
                       </span>
+
                     </div>
 
                     <p className="mt-2 text-sm leading-6 text-gray-300">
@@ -108,11 +341,13 @@ function AnalysisDashboard({ analysis }) {
                   </div>
                 )
               )}
+
             </div>
           </div>
 
           {/* Strengths */}
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+
             <h3 className="text-xl font-semibold text-white">
               Strengths
             </h3>
@@ -122,13 +357,16 @@ function AnalysisDashboard({ analysis }) {
             </p>
 
             <div className="mt-5 space-y-3">
+
               {analysis.recommendations.strengths.map(
                 (strength, index) => (
                   <div
                     key={index}
                     className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4"
                   >
-                    <span className="text-green-400">✓</span>
+                    <span className="text-green-400">
+                      ✓
+                    </span>
 
                     <p className="text-sm leading-6 text-gray-300">
                       {strength}
@@ -136,6 +374,7 @@ function AnalysisDashboard({ analysis }) {
                   </div>
                 )
               )}
+
             </div>
           </div>
 

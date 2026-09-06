@@ -20,7 +20,7 @@ function App() {
 
       <AnalysisDashboard analysis={analysis} />
 
-      <AnalysisPreview />
+      {!analysis && <AnalysisPreview />}
       <Features />
       <HowItWorks />
       <CTA />

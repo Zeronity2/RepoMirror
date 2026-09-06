@@ -1,4 +1,17 @@
-const analyzeDependencies = (packageJsonContent, structure) => {
+const analyzeDependencies = (content, structure, projectType) => {
+  if (!content) {
+    return null;
+  }
+
+  if (projectType === "Python") {
+    return analyzePythonDependencies(content, structure);
+  }
+
+  return analyzeNodeDependencies(content, structure);
+};
+
+// JavaScript / TypeScript dependencies
+const analyzeNodeDependencies = (packageJsonContent, structure) => {
   try {
     const packageJson = JSON.parse(packageJsonContent);
 
@@ -20,9 +33,43 @@ const analyzeDependencies = (packageJsonContent, structure) => {
       devDependencies,
     };
   } catch (error) {
-  console.error("Dependency analyzer error:", error.message);
-  throw new Error("Invalid package.json");
-}
+    console.error("Dependency analyzer error:", error.message);
+    throw new Error("Invalid package.json");
+  }
+};
+
+// Python dependencies
+const analyzePythonDependencies = (content, structure) => {
+  const dependencies = [];
+
+  const dependencySection = content.match(
+    /\[project\][\s\S]*?dependencies\s*=\s*\[([\s\S]*?)\]/
+  );
+
+  if (dependencySection) {
+    const matches = dependencySection[1].match(/["']([^"']+)["']/g);
+
+    if (matches) {
+      matches.forEach((dependency) => {
+        dependencies.push(
+          dependency.replace(/^["']|["']$/g, "")
+        );
+      });
+    }
+  }
+
+  const totalCount = dependencies.length;
+
+  return {
+    productionCount: totalCount,
+    developmentCount: 0,
+    totalCount,
+    packageManager: "pip",
+    lockfile: detectLockfile(structure),
+    dependencyLevel: getDependencyLevel(totalCount),
+    dependencies,
+    devDependencies: {},
+  };
 };
 
 const detectPackageManager = (packageJson) => {
