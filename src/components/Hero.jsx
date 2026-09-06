@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { analyzeRepository } from "../services/api";
 
-function Hero() {
+function Hero({ onAnalysis }){
   const [repoUrl, setRepoUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // const [analysis, setAnalysis] = useState(null);
 
   const handleAnalyze = async () => {
     if (!repoUrl.trim()) {
@@ -17,7 +18,8 @@ function Hero() {
 
     try {
       const data = await analyzeRepository(repoUrl);
-      console.log("Analysis result:", JSON.stringify(data, null, 2));
+      onAnalysis(data);
+      console.log("Analysis result:", data);
     } catch (err) {
       setError(err.message);
     } finally {
