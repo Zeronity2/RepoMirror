@@ -3,30 +3,39 @@ const analyzeRecommendations = ({
   dependencies,
   practices,
   security,
+  projectType,
 }) => {
   const recommendations = [];
   const strengths = [];
 
-  // Security
-  if (security?.riskLevel === "High") {
-  recommendations.push({
-    severity: "High",
-    category: "Security",
-    message:
-      `Detected ${security.sensitiveFiles.count} sensitive file(s). Verify that they do not contain secrets or credentials. Remove and rotate any exposed secrets immediately.`,
-  });
-} else if (security?.riskLevel === "Medium") {
-  recommendations.push({
-    severity: "Medium",
-    category: "Security",
-    message:
-      "No sensitive files were detected, but the repository is missing a .gitignore file. Add one to reduce the risk of accidentally committing sensitive files.",
-  });
-} else {
-  strengths.push("No major sensitive-file security risks detected.");
-}
+  const type = projectType?.type || "Unknown";
 
-  // Documentation
+  // =========================
+  // SECURITY
+  // =========================
+
+  if (security?.riskLevel === "High") {
+    recommendations.push({
+      severity: "High",
+      category: "Security",
+      message:
+        `Detected ${security.sensitiveFiles.count} sensitive file(s). Verify that they do not contain secrets or credentials. Remove and rotate any exposed secrets immediately.`,
+    });
+  } else if (security?.riskLevel === "Medium") {
+    recommendations.push({
+      severity: "Medium",
+      category: "Security",
+      message:
+        "No sensitive files were detected, but the repository is missing a .gitignore file. Add one to reduce the risk of accidentally committing sensitive files.",
+    });
+  } else {
+    strengths.push("No major sensitive-file security risks detected.");
+  }
+
+  // =========================
+  // DOCUMENTATION
+  // =========================
+
   if (practices?.documentation?.readme) {
     strengths.push("README documentation is present.");
   } else {
@@ -49,19 +58,25 @@ const analyzeRecommendations = ({
     });
   }
 
-  // Testing
- if (practices?.testing?.hasTests) {
-  strengths.push("Test files are present.");
-} else {
-  recommendations.push({
-    severity: "High",
-    category: "Testing",
-    message:
-      "No test files were detected. Add automated tests to improve reliability and prevent regressions.",
-  });
-}
+  // =========================
+  // TESTING
+  // =========================
 
+  if (practices?.testing?.hasTests) {
+    strengths.push("Test files are present.");
+  } else {
+    recommendations.push({
+      severity: "High",
+      category: "Testing",
+      message:
+        "No test files were detected. Add automated tests to improve reliability and prevent regressions.",
+    });
+  }
+
+  // =========================
   // CI/CD
+  // =========================
+
   if (practices?.ciCd?.githubActions) {
     strengths.push("GitHub Actions CI/CD configuration is present.");
   } else {
@@ -73,7 +88,10 @@ const analyzeRecommendations = ({
     });
   }
 
-  // Configuration
+  // =========================
+  // CONFIGURATION
+  // =========================
+
   if (!practices?.configuration?.envExample) {
     recommendations.push({
       severity: "Low",
@@ -94,47 +112,89 @@ const analyzeRecommendations = ({
     });
   }
 
-  // Code quality
-  if (!practices?.codeQuality?.eslint) {
-    recommendations.push({
-      severity: "Low",
-      category: "Code Quality",
-      message:
-        "Consider adding ESLint to detect common JavaScript and TypeScript issues.",
-    });
-  } else {
-    strengths.push("ESLint configuration is present.");
+  // =========================
+  // CODE QUALITY
+  // =========================
+
+  // JavaScript / TypeScript only
+  if (
+    type === "Frontend" ||
+    type === "Backend" ||
+    type === "JavaScript / TypeScript"
+  ) {
+    if (!practices?.codeQuality?.eslint) {
+      recommendations.push({
+        severity: "Low",
+        category: "Code Quality",
+        message:
+          "Consider adding ESLint to detect common JavaScript and TypeScript issues.",
+      });
+    } else {
+      strengths.push("ESLint configuration is present.");
+    }
+
+    if (!practices?.codeQuality?.prettier) {
+      recommendations.push({
+        severity: "Low",
+        category: "Code Quality",
+        message:
+          "Consider adding Prettier to maintain consistent code formatting.",
+      });
+    } else {
+      strengths.push("Prettier configuration is present.");
+    }
   }
 
-  if (!practices?.codeQuality?.prettier) {
-    recommendations.push({
-      severity: "Low",
-      category: "Code Quality",
-      message:
-        "Consider adding Prettier to maintain consistent code formatting.",
-    });
-  } else {
-    strengths.push("Prettier configuration is present.");
+  // Python only
+  if (type === "Python") {
+    if (!practices?.codeQuality?.ruff) {
+      recommendations.push({
+        severity: "Low",
+        category: "Code Quality",
+        message:
+          "Consider adding Ruff for Python linting and code quality checks.",
+      });
+    } else {
+      strengths.push("Ruff configuration is present.");
+    }
+
+    if (!practices?.codeQuality?.formatter) {
+      recommendations.push({
+        severity: "Low",
+        category: "Code Quality",
+        message:
+          "Consider adding a Python formatter such as Black for consistent code formatting.",
+      });
+    } else {
+      strengths.push("Python formatting configuration is present.");
+    }
   }
 
-  // Dependencies
- if (dependencies?.totalCount > 150) {
-  recommendations.push({
-    severity: "Medium",
-    category: "Dependencies",
-    message:
-      "The project has a large number of dependencies. Review them regularly and remove unnecessary packages.",
-  });
-} else if (dependencies?.totalCount > 75) {
-  recommendations.push({
-    severity: "Low",
-    category: "Dependencies",
-    message:
-      "The project has a moderate dependency footprint. Review dependencies periodically to keep the project maintainable.",
-  });
-} else if (dependencies) {
-  strengths.push("Dependency footprint is manageable.");
-}
+  // =========================
+  // DEPENDENCIES
+  // =========================
+
+  if (dependencies?.totalCount > 150) {
+    recommendations.push({
+      severity: "Medium",
+      category: "Dependencies",
+      message:
+        "The project has a large number of dependencies. Review them regularly and remove unnecessary packages.",
+    });
+  } else if (dependencies?.totalCount > 75) {
+    recommendations.push({
+      severity: "Low",
+      category: "Dependencies",
+      message:
+        "The project has a moderate dependency footprint. Review dependencies periodically to keep the project maintainable.",
+    });
+  } else if (dependencies) {
+    strengths.push("Dependency footprint is manageable.");
+  }
+
+  // =========================
+  // RESULT
+  // =========================
 
   return {
     totalRecommendations: recommendations.length,

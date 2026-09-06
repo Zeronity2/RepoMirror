@@ -108,6 +108,7 @@ const analyzeRepository = async (req, res) => {
       dependencies,
       practices,
       security,
+      projectType,
     });
 
     // Send final analysis response
