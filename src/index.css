@@ -1,4 +1,14 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+
+:root {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #dfe2ef;
+  background: #0a0e17;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
 
 * {
   box-sizing: border-box;
@@ -10,7 +20,104 @@ html {
 
 body {
   margin: 0;
-  background: #05070d;
-  color: #ffffff;
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-width: 320px;
+  background:
+    linear-gradient(
+      rgba(17, 24, 39, 0.28) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(17, 24, 39, 0.28) 1px,
+      transparent 1px
+    ),
+    #0a0e17;
+
+  background-size: 24px 24px;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: rgba(245, 158, 11, 0.25);
+  color: #fff7ed;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0e17;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.technical-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.telemetry-number {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.technical-grid {
+  background-image:
+    linear-gradient(
+      rgba(51, 65, 85, 0.16) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(51, 65, 85, 0.16) 1px,
+      transparent 1px
+    );
+
+  background-size: 24px 24px;
+}
+
+.technical-panel {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+}
+
+.technical-panel:hover {
+  border-color: #334155;
+}
+
+.amber-glow {
+  box-shadow:
+    0 0 10px rgba(245, 158, 11, 0.22);
+}
+
+.green-glow {
+  box-shadow:
+    0 0 10px rgba(16, 185, 129, 0.22);
 }

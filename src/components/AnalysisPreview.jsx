@@ -1,99 +1,356 @@
 function AnalysisPreview() {
-  const metrics = [
-    { name: "Code Quality", score: 84 },
-    { name: "Security", score: 91 },
-    { name: "Testing", score: 52 },
-    { name: "Documentation", score: 87 },
-  ];
-
   return (
-    <section className="px-6 pb-24">
-      <div className="mx-auto max-w-5xl">
+    <section className="relative border-b border-slate-800 bg-[#0a0e17]">
+      
+      {/* Technical background */}
+      <div className="technical-grid pointer-events-none absolute inset-0 opacity-30" />
 
-        <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] shadow-2xl">
+      <div className="relative mx-auto max-w-[1500px] px-5 py-20 lg:px-8 lg:py-28">
 
-          {/* Header */}
-          <div className="flex flex-col gap-3 border-b border-white/10 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-500">
-                Repository Analysis
-              </p>
+        {/* Section heading */}
+        <div className="mb-10 flex items-end justify-between gap-8">
 
-              <p className="mt-1 text-sm text-gray-300">
-                github.com/user/project
-              </p>
+          <div>
+            <div className="mb-4 flex items-center gap-3">
+              <span className="h-4 w-0.5 bg-amber-400" />
+
+              <span className="technical-label text-amber-400">
+                ANALYSIS PREVIEW
+              </span>
             </div>
 
-            <span className="w-fit rounded-full bg-green-400/10 px-3 py-1 text-xs font-medium text-green-400">
-              ● Healthy
-            </span>
+            <h2 className="text-3xl font-semibold tracking-tight text-slate-100 sm:text-4xl">
+              From repository
+              <span className="text-slate-500"> to readable signals.</span>
+            </h2>
+
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-500">
+              RepoMirror scans the repository and organizes the important
+              engineering signals into one technical overview.
+            </p>
           </div>
 
-          {/* Score */}
-          <div className="grid gap-8 px-6 py-8 md:grid-cols-[180px_1fr] md:items-center">
+          <div className="hidden text-right lg:block">
+            <p className="technical-label text-slate-600">
+              SAMPLE OUTPUT
+            </p>
 
-            <div className="text-center">
-              <div className="text-6xl font-bold">
-                82
-              </div>
+            <p className="mt-2 font-mono text-xs text-emerald-400">
+              ANALYSIS READY
+            </p>
+          </div>
 
-              <p className="mt-2 text-sm text-gray-500">
-                Overall Health
+        </div>
+
+        {/* =====================================================
+            MAIN ANALYSIS PANEL
+        ===================================================== */}
+
+        <div className="technical-panel overflow-hidden">
+
+          {/* Panel header */}
+          <div className="flex flex-col gap-4 border-b border-slate-800 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+
+            <div>
+              <p className="technical-label text-slate-600">
+                REPOSITORY
               </p>
 
-              <p className="text-xs text-gray-600">
-                out of 100
+              <p className="mt-1 font-mono text-sm text-slate-200">
+                github.com/facebook/react
               </p>
             </div>
 
-            {/* Metrics */}
-            <div className="space-y-5">
-              {metrics.map((metric) => (
-                <div key={metric.name}>
+            <div className="flex items-center gap-3">
 
-                  <div className="mb-2 flex justify-between text-sm">
-                    <span className="text-gray-400">
-                      {metric.name}
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+
+              <span className="technical-label text-emerald-400">
+                ANALYSIS COMPLETE
+              </span>
+
+            </div>
+
+          </div>
+
+          {/* =================================================
+              TOP METRICS
+          ================================================= */}
+
+          <div className="grid grid-cols-2 border-b border-slate-800 lg:grid-cols-4">
+
+            <div className="border-b border-slate-800 p-5 lg:border-b-0 lg:border-r">
+              <p className="technical-label text-slate-600">
+                HEALTH
+              </p>
+
+              <p className="telemetry-number mt-3 text-3xl text-amber-400">
+                100
+              </p>
+
+              <p className="mt-1 font-mono text-[10px] text-slate-600">
+                / 100
+              </p>
+            </div>
+
+            <div className="border-b border-slate-800 p-5 lg:border-b-0 lg:border-r">
+              <p className="technical-label text-slate-600">
+                FILES
+              </p>
+
+              <p className="telemetry-number mt-3 text-3xl text-slate-100">
+                7,213
+              </p>
+
+              <p className="mt-1 font-mono text-[10px] text-slate-600">
+                DETECTED
+              </p>
+            </div>
+
+            <div className="border-r border-slate-800 p-5">
+              <p className="technical-label text-slate-600">
+                DEPENDENCIES
+              </p>
+
+              <p className="telemetry-number mt-3 text-3xl text-slate-100">
+                113
+              </p>
+
+              <p className="mt-1 font-mono text-[10px] text-slate-600">
+                PACKAGES
+              </p>
+            </div>
+
+            <div className="p-5">
+              <p className="technical-label text-slate-600">
+                SECURITY
+              </p>
+
+              <p className="telemetry-number mt-3 text-3xl text-emerald-400">
+                LOW
+              </p>
+
+              <p className="mt-1 font-mono text-[10px] text-slate-600">
+                RISK LEVEL
+              </p>
+            </div>
+
+          </div>
+
+          {/* =================================================
+              LOWER GRID
+          ================================================= */}
+
+          <div className="grid lg:grid-cols-12">
+
+            {/* Health breakdown */}
+            <div className="border-b border-slate-800 p-6 lg:col-span-7 lg:border-b-0 lg:border-r">
+
+              <div className="mb-6 flex items-center justify-between">
+
+                <div>
+                  <p className="technical-label text-slate-600">
+                    HEALTH SIGNALS
+                  </p>
+
+                  <h3 className="mt-2 text-lg font-semibold text-slate-200">
+                    Engineering quality
+                  </h3>
+                </div>
+
+                <span className="font-mono text-xs text-amber-400">
+                  100%
+                </span>
+
+              </div>
+
+              <div className="space-y-5">
+
+                <div>
+                  <div className="mb-2 flex justify-between">
+                    <span className="font-mono text-xs text-slate-400">
+                      DOCUMENTATION
                     </span>
 
-                    <span className="text-gray-300">
-                      {metric.score}
+                    <span className="font-mono text-xs text-slate-500">
+                      20/20
                     </span>
                   </div>
 
-                  <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-purple-500 to-blue-400"
-                      style={{ width: `${metric.score}%` }}
-                    />
+                  <div className="h-1 bg-slate-800">
+                    <div className="h-full w-full bg-amber-400" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-2 flex justify-between">
+                    <span className="font-mono text-xs text-slate-400">
+                      TESTING
+                    </span>
+
+                    <span className="font-mono text-xs text-slate-500">
+                      20/20
+                    </span>
+                  </div>
+
+                  <div className="h-1 bg-slate-800">
+                    <div className="h-full w-full bg-amber-400" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-2 flex justify-between">
+                    <span className="font-mono text-xs text-slate-400">
+                      STRUCTURE
+                    </span>
+
+                    <span className="font-mono text-xs text-slate-500">
+                      20/20
+                    </span>
+                  </div>
+
+                  <div className="h-1 bg-slate-800">
+                    <div className="h-full w-full bg-amber-400" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-2 flex justify-between">
+                    <span className="font-mono text-xs text-slate-400">
+                      CONFIGURATION
+                    </span>
+
+                    <span className="font-mono text-xs text-slate-500">
+                      20/20
+                    </span>
+                  </div>
+
+                  <div className="h-1 bg-slate-800">
+                    <div className="h-full w-full bg-amber-400" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-2 flex justify-between">
+                    <span className="font-mono text-xs text-slate-400">
+                      CODEBASE
+                    </span>
+
+                    <span className="font-mono text-xs text-slate-500">
+                      20/20
+                    </span>
+                  </div>
+
+                  <div className="h-1 bg-slate-800">
+                    <div className="h-full w-full bg-amber-400" />
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Project classification */}
+            <div className="p-6 lg:col-span-5">
+
+              <p className="technical-label text-slate-600">
+                PROJECT DETECTION
+              </p>
+
+              <h3 className="mt-2 text-lg font-semibold text-slate-200">
+                Frontend
+              </h3>
+
+              <div className="mt-6 border border-slate-800 bg-[#0a0e17] p-5">
+
+                <div className="flex items-center justify-between">
+
+                  <span className="font-mono text-xs text-slate-500">
+                    CONFIDENCE
+                  </span>
+
+                  <span className="font-mono text-xs text-emerald-400">
+                    HIGH
+                  </span>
+
+                </div>
+
+                <div className="mt-5 h-1 bg-slate-800">
+                  <div className="h-full w-[92%] bg-emerald-400" />
+                </div>
+
+                <div className="mt-5 grid grid-cols-2 gap-3">
+
+                  <div className="border border-slate-800 p-3">
+                    <p className="technical-label text-slate-600">
+                      TYPE
+                    </p>
+
+                    <p className="mt-2 font-mono text-xs text-slate-300">
+                      REACT
+                    </p>
+                  </div>
+
+                  <div className="border border-slate-800 p-3">
+                    <p className="technical-label text-slate-600">
+                      STATUS
+                    </p>
+
+                    <p className="mt-2 font-mono text-xs text-emerald-400">
+                      DETECTED
+                    </p>
                   </div>
 
                 </div>
-              ))}
+
+              </div>
+
             </div>
 
           </div>
 
-          {/* Recommendation */}
-          <div className="border-t border-white/10 px-6 py-5">
-            <div className="flex items-start gap-3">
+          {/* =================================================
+              FOOTER SIGNALS
+          ================================================= */}
 
-              <div className="mt-0.5">
-                ⚠️
-              </div>
+          <div className="grid border-t border-slate-800 sm:grid-cols-3">
 
-              <div>
-                <p className="text-sm font-medium text-white">
-                  3 improvements recommended
-                </p>
+            <div className="border-b border-slate-800 p-5 sm:border-b-0 sm:border-r">
 
-                <p className="mt-1 text-sm text-gray-500">
-                  Testing coverage and project documentation could
-                  be improved.
-                </p>
-              </div>
+              <p className="technical-label text-slate-600">
+                STRUCTURE
+              </p>
+
+              <p className="mt-2 font-mono text-sm text-emerald-400">
+                DETECTED
+              </p>
 
             </div>
+
+            <div className="border-b border-slate-800 p-5 sm:border-b-0 sm:border-r">
+
+              <p className="technical-label text-slate-600">
+                SECURITY
+              </p>
+
+              <p className="mt-2 font-mono text-sm text-emerald-400">
+                LOW RISK
+              </p>
+
+            </div>
+
+            <div className="p-5">
+
+              <p className="technical-label text-slate-600">
+                RECOMMENDATIONS
+              </p>
+
+              <p className="mt-2 font-mono text-sm text-amber-400">
+                AVAILABLE
+              </p>
+
+            </div>
+
           </div>
 
         </div>
