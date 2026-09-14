@@ -158,7 +158,7 @@ const analyzeRecommendations = ({
       strengths.push("Ruff configuration is present.");
     }
 
-    if (!practices?.codeQuality?.formatter) {
+    if (!practices?.codeQuality?.black) {
       recommendations.push({
         severity: "Low",
         category: "Code Quality",
@@ -167,6 +167,34 @@ const analyzeRecommendations = ({
       });
     } else {
       strengths.push("Python formatting configuration is present.");
+    }
+  }
+
+  // Java only
+  if (type === "Java") {
+    if (!practices?.codeQuality?.checkstyle) {
+      recommendations.push({
+        severity: "Low",
+        category: "Code Quality",
+        message:
+          "Consider adding Checkstyle to maintain consistent Java code quality and style.",
+      });
+    } else {
+      strengths.push("Checkstyle configuration is present.");
+    }
+  }
+
+  // Rust only
+  if (type === "Rust") {
+    if (!practices?.codeQuality?.clippy) {
+      recommendations.push({
+        severity: "Low",
+        category: "Code Quality",
+        message:
+          "Consider using Clippy for Rust linting and code quality checks.",
+      });
+    } else {
+      strengths.push("Clippy configuration is present.");
     }
   }
 

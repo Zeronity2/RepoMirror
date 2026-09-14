@@ -14,7 +14,8 @@ function AnalysisDashboard({ analysis }) {
 
   const healthScore = health?.score ?? 0;
 
-  const practiceItems = [
+  // Project-aware engineering practices
+  const commonPractices = [
     ["README", practices?.documentation?.readme],
     ["LICENSE", practices?.documentation?.license],
     ["TESTS", practices?.testing?.hasTests],
@@ -22,9 +23,44 @@ function AnalysisDashboard({ analysis }) {
     ["DOCKER", practices?.containerization?.docker],
     [".ENV EXAMPLE", practices?.configuration?.envExample],
     [".GITIGNORE", practices?.configuration?.gitignore],
-    ["ESLINT", practices?.codeQuality?.eslint],
-    ["PRETTIER", practices?.codeQuality?.prettier],
   ];
+
+  const type = projectType?.type || "";
+
+  let qualityPractices = [];
+
+  if (
+    type === "Frontend" ||
+    type === "Backend" ||
+    type === "JavaScript / TypeScript"
+  ) {
+    qualityPractices = [
+      ["ESLINT", practices?.codeQuality?.eslint],
+      ["PRETTIER", practices?.codeQuality?.prettier],
+    ];
+  } else if (type === "Python") {
+    qualityPractices = [
+      ["RUFF", practices?.codeQuality?.ruff],
+      ["BLACK", practices?.codeQuality?.black],
+    ];
+  } else if (type === "Java") {
+    qualityPractices = [
+      ["CHECKSTYLE", practices?.codeQuality?.checkstyle],
+    ];
+  } else if (type === "Rust") {
+    qualityPractices = [
+      ["CLIPPY", practices?.codeQuality?.clippy],
+    ];
+  }
+
+  const practiceItems = [
+    ...commonPractices,
+    ...qualityPractices,
+  ];
+
+  const detectedPractices = practiceItems.filter(
+    (item) => item[1]
+  ).length;
 
   const getHealthLabel = () => {
     if (healthScore >= 90) return "EXCELLENT";
@@ -99,6 +135,7 @@ function AnalysisDashboard({ analysis }) {
             </div>
 
           </div>
+
         </div>
 
         {/* TOP METRICS */}
@@ -225,7 +262,6 @@ function AnalysisDashboard({ analysis }) {
 
               {Object.entries(health?.breakdown || {}).map(
                 ([name, value]) => (
-
                   <div key={name}>
 
                     <div className="mb-2 flex justify-between">
@@ -255,7 +291,6 @@ function AnalysisDashboard({ analysis }) {
                     </div>
 
                   </div>
-
                 )
               )}
 
@@ -409,10 +444,7 @@ function AnalysisDashboard({ analysis }) {
               </div>
 
               <span className="font-mono text-[10px] text-emerald-400">
-                {
-                  practiceItems.filter((item) => item[1]).length
-                }
-                /9 DETECTED
+                {detectedPractices}/{practiceItems.length} DETECTED
               </span>
 
             </div>
@@ -534,6 +566,7 @@ function AnalysisDashboard({ analysis }) {
             <div className="grid gap-3 p-5 sm:grid-cols-3">
 
               <div>
+
                 <p className="technical-label text-slate-600">
                   LEVEL
                 </p>
@@ -541,21 +574,25 @@ function AnalysisDashboard({ analysis }) {
                 <p className="mt-2 font-mono text-xs uppercase text-amber-400">
                   {dependencies?.dependencyLevel || "UNKNOWN"}
                 </p>
+
               </div>
 
               <div>
+
                 <p className="technical-label text-slate-600">
                   LOCKFILE
                 </p>
 
                 <p className="mt-2 font-mono text-xs text-emerald-400">
-                  {dependencies?.lockfile
+                  {dependencies?.lockfile?.detected
                     ? "PRESENT"
                     : "NOT DETECTED"}
                 </p>
+
               </div>
 
               <div>
+
                 <p className="technical-label text-slate-600">
                   MANAGER
                 </p>
@@ -563,6 +600,7 @@ function AnalysisDashboard({ analysis }) {
                 <p className="mt-2 font-mono text-xs text-slate-300">
                   {dependencies?.packageManager || "N/A"}
                 </p>
+
               </div>
 
             </div>

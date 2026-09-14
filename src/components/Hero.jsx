@@ -20,9 +20,22 @@ function Hero({ onAnalysis }) {
 
     try {
       const data = await analyzeRepository(value);
+
       onAnalysis(data);
+
+      // Scroll to the analysis dashboard after results load
+      setTimeout(() => {
+        document
+          .getElementById("analysis-dashboard")
+          ?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+      }, 100);
     } catch (err) {
-      setError(err.message || "Unable to analyze repository.");
+      setError(
+        err.message || "Unable to analyze repository."
+      );
     } finally {
       setLoading(false);
     }
@@ -120,7 +133,9 @@ function Hero({ onAnalysis }) {
                   disabled={loading}
                   className="h-14 border-t border-slate-700 bg-amber-400 px-7 font-mono text-xs font-semibold uppercase tracking-wide text-[#0a0e17] transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-60 sm:border-l sm:border-t-0"
                 >
-                  {loading ? "ANALYZING..." : "ANALYZE REPOSITORY"}
+                  {loading
+                    ? "ANALYZING..."
+                    : "ANALYZE REPOSITORY"}
                 </button>
 
               </div>
