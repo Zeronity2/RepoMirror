@@ -1,16 +1,178 @@
-# React + Vite
+# RepoMirror
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Open source made readable.
 
-Currently, two official plugins are available:
+RepoMirror is a GitHub repository intelligence and analysis platform that analyzes publicly accessible GitHub repositories and provides a clear overview of their structure, health, project type, dependencies, engineering practices, security indicators, strengths, and actionable recommendations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- GitHub repository URL analysis
+- Repository structure analysis
+- Repository health score
+- Project type detection
+- Dependency analysis
+- Package manager and lockfile detection
+- Engineering practice detection
+- Security indicator analysis
+- Strength detection
+- Actionable recommendations
+- Project-aware code quality checks
+- Responsive analysis dashboard
+- Error handling and loading states
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## How It Works
 
-## Expanding the ESLint configuration
+1. Enter a public GitHub repository URL.
+2. RepoMirror sends the repository URL to the backend.
+3. The backend retrieves repository information using the GitHub API.
+4. The repository tree is analyzed by multiple analysis modules.
+5. The results are combined into a structured analysis.
+6. The frontend displays the results in an interactive dashboard.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Analysis Modules
+
+### Repository Structure
+
+Analyzes:
+
+- Total files
+- Total folders
+- File extensions
+- README presence
+- Configuration files
+- Test files
+
+### Repository Health
+
+Calculates an overall health score based on:
+
+- Documentation
+- Testing
+- Configuration
+- Repository structure
+- Codebase characteristics
+
+### Project Type
+
+Detects common project types such as:
+
+- Frontend
+- Backend
+- JavaScript / TypeScript
+- Python
+- Java
+- Rust
+
+### Dependencies
+
+Analyzes:
+
+- Production dependencies
+- Development dependencies
+- Total dependencies
+- Package manager
+- Lockfile presence
+- Dependency footprint
+
+### Engineering Practices
+
+Checks for practices such as:
+
+- README
+- License
+- Tests
+- GitHub Actions
+- Docker
+- `.env.example`
+- `.gitignore`
+- ESLint
+- Prettier
+- Ruff
+- Black
+- Checkstyle
+- Clippy
+
+### Security
+
+Checks for indicators such as:
+
+- Sensitive files
+- Environment files
+- Credential-related files
+- Key and certificate files
+- `.gitignore` protection
+
+### Recommendations
+
+Generates recommendations based on detected repository conditions, including:
+
+- Security improvements
+- Documentation improvements
+- Testing improvements
+- CI/CD improvements
+- Configuration improvements
+- Code quality improvements
+- Dependency maintenance
+
+## Technology Stack
+
+### Frontend
+
+- React
+- Vite
+- Tailwind CSS
+- JavaScript
+
+### Backend
+
+- Node.js
+- Express.js
+- REST API
+
+### External API
+
+- GitHub REST API
+
+### Deployment
+
+- Vercel — Frontend
+- Render — Backend
+
+## Project Structure
+
+```text
+RepoMirror/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── Navbar.jsx
+│   │   ├── Hero.jsx
+│   │   ├── AnalysisPreview.jsx
+│   │   ├── Features.jsx
+│   │   ├── HowItWorks.jsx
+│   │   ├── CTA.jsx
+│   │   ├── Footer.jsx
+│   │   └── AnalysisDashboard.jsx
+│   ├── services/
+│   │   └── api.js
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   └── main.jsx
+│
+├── server/
+│   ├── analyzers/
+│   ├── controllers/
+│   ├── routes/
+│   ├── services/
+│   ├── utils/
+│   ├── .env
+│   ├── server.js
+│   └── package.json
+│
+├── .gitignore
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
